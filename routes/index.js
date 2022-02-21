@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var geoip = require("geoip-lite");
+var getIP = require('ipware')().get_ip;
 
 const { JsonDB } = require("node-json-db");
 const { Config } = require("node-json-db/dist/lib/JsonDBConfig");
@@ -19,12 +20,15 @@ router.get("/data", function (req, res, next) {
 
 router.get("/test", function (req, res, next) {
   try {
-    console.log("BEFORE PUSH", req.ip);
-    var geo = geoip.lookup(req.ip);
+    console.log("BEFORE PUSH", req.ip, req.socket.remoteAddress);
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress ;
+
+    var ipInfo = getIP(req);
+    var geo = geoip.lookup(ipInfo);
 
     db.push("/data", geo);
-    // const data = db.getData("myDataBase");
-    res.status(200).send({ data: geo });
+
+    res.status(200).send({ ip, reqip: req.ip, ipInfo, data: geo });
     console.log("AFTER PUSH");
   } catch (error) {
     console.log("ERROR", error);

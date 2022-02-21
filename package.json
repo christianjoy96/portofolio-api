@@ -13,6 +13,7 @@
     "express": "~4.16.1",
     "geoip-lite": "^1.4.3",
     "http-errors": "~1.6.3",
+    "ipware": "^2.0.0",
     "morgan": "~1.9.1",
     "node-json-db": "^1.4.1",
     "nodemon": "^2.0.15",
