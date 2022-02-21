@@ -24,7 +24,7 @@ router.get("/test", function (req, res, next) {
     var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress ;
 
     var ipInfo = getIP(req);
-    var geo = geoip.lookup(ipInfo);
+    var geo = geoip.lookup(ip);
 
     db.push("/data", geo);
 
